@@ -84,6 +84,16 @@ img {
   color: var(--brown-deep);
   letter-spacing: -0.5px;
 }
+.navbar-logo {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo-img {
+  width: 150px; /* slightly smaller than before */
+  height: auto;
+  object-fit: contain;
+}
 
 .navbar-logo span {
   color: var(--brown-accent);
