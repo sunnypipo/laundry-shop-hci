@@ -3,8 +3,224 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Book a Pickup Mr. Quickly</title>
+  <title>Book a Pickup — Mr. Quickly</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── ORDER SUMMARY PANEL ── */
+    #order-summary {
+      display: none;
+      background: var(--white);
+      border-radius: 20px;
+      padding: 52px 48px;
+      border: 1px solid var(--beige-mid);
+      box-shadow: var(--shadow);
+    }
+
+    #order-summary h2 {
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+    }
+
+    #order-summary .summary-subtitle {
+      font-size: 0.9rem;
+      color: var(--gray-warm);
+      margin-bottom: 36px;
+    }
+
+    .summary-section {
+      margin-bottom: 28px;
+    }
+
+    .summary-section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--beige-mid);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 10px;
+      font-size: 0.92rem;
+    }
+
+    .summary-row .label {
+      color: var(--gray-warm);
+      flex-shrink: 0;
+      min-width: 160px;
+    }
+
+    .summary-row .value {
+      font-weight: 700;
+      color: var(--brown-deep);
+      text-align: right;
+    }
+
+    .summary-addons {
+      font-size: 0.88rem;
+      color: var(--gray-warm);
+      margin-top: 4px;
+    }
+
+    .summary-price-box {
+      background: var(--beige);
+      border-radius: var(--radius-sm);
+      padding: 20px 24px;
+      margin: 28px 0;
+      border: 1px solid var(--beige-mid);
+    }
+
+    .summary-price-box p {
+      font-size: 0.82rem;
+      color: var(--gray-warm);
+      line-height: 1.7;
+    }
+
+    .summary-price-box strong {
+      color: var(--brown-deep);
+    }
+
+    .summary-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-top: 32px;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      color: var(--brown-mid);
+      padding: 13px 28px;
+      border-radius: var(--radius-sm);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border: 2px solid var(--beige-mid);
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--brown-mid);
+    }
+
+    .summary-note {
+      font-size: 0.8rem;
+      color: var(--gray-warm);
+    }
+
+    .summary-instructions {
+      font-size: 0.88rem;
+      color: var(--brown-deep);
+      font-style: italic;
+      background: var(--beige);
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      margin-top: 4px;
+    }
+
+    /* ── LAUNDRY STEP CARDS ── */
+    .laundry-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .laundry-step-card {
+      cursor: pointer;
+      display: block;
+    }
+
+    .laundry-step-card input[type="checkbox"] {
+      display: none;
+    }
+
+    .step-card-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--beige);
+      border: 2px solid var(--beige-mid);
+      border-radius: var(--radius);
+      padding: 20px 18px;
+      transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+      height: 100%;
+    }
+
+    .laundry-step-card:hover .step-card-inner {
+      border-color: var(--brown-light);
+    }
+
+    .laundry-step-card input:checked ~ .step-card-inner {
+      border-color: var(--brown-mid);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(107,74,46,0.12);
+    }
+
+    .step-card-icon {
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    .step-card-body strong {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--brown-deep);
+      margin-bottom: 4px;
+    }
+
+    .step-card-body span {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--gray-warm);
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .step-card-price {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--brown-accent);
+      letter-spacing: 0.02em;
+    }
+
+    .laundry-note {
+      font-size: 0.83rem;
+      color: var(--gray-warm);
+      background: var(--beige);
+      border-left: 3px solid var(--tan);
+      padding: 10px 14px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    #laundry-steps-error {
+      display: none;
+      color: #c0392b;
+      font-size: 0.78rem;
+      margin-bottom: 10px;
+    }
+
+    #laundry-steps-error.show {
+      display: block !important;
+    }
+
+    .step-card-inner.error-border {
+      border-color: #c0392b !important;
+    }
+  </style>
 </head>
 <body>
 
@@ -36,6 +252,8 @@
     <section class="book-section">
 
       <div class="book-form-wrap">
+
+        <!-- STEP 1: FORM -->
         <form class="laundry-form" id="bookingForm" novalidate>
 
           <p class="form-section-title">Personal Information</p>
@@ -72,12 +290,12 @@
               <label for="pickup-time">Pickup Time *</label>
               <select id="pickup-time" name="pickup-time">
                 <option value="">Select a time</option>
-                <option>7:00 AM 9:00 AM</option>
-                <option>9:00 AM 11:00 AM</option>
-                <option>11:00 AM 1:00 PM</option>
-                <option>1:00 PM 3:00 PM</option>
-                <option>3:00 PM 5:00 PM</option>
-                <option>5:00 PM 7:00 PM</option>
+                <option>7:00 AM – 9:00 AM</option>
+                <option>9:00 AM – 11:00 AM</option>
+                <option>11:00 AM – 1:00 PM</option>
+                <option>1:00 PM – 3:00 PM</option>
+                <option>3:00 PM – 5:00 PM</option>
+                <option>5:00 PM – 7:00 PM</option>
               </select>
               <span class="error-msg" id="pickup-time-error">Please select a pickup time.</span>
             </div>
@@ -93,12 +311,12 @@
               <label for="delivery-time">Preferred Delivery Time *</label>
               <select id="delivery-time" name="delivery-time">
                 <option value="">Select a time</option>
-                <option>7:00 AM 9:00 AM</option>
-                <option>9:00 AM 11:00 AM</option>
-                <option>11:00 AM 1:00 PM</option>
-                <option>1:00 PM 3:00 PM</option>
-                <option>3:00 PM 5:00 PM</option>
-                <option>5:00 PM 7:00 PM</option>
+                <option>7:00 AM – 9:00 AM</option>
+                <option>9:00 AM – 11:00 AM</option>
+                <option>11:00 AM – 1:00 PM</option>
+                <option>1:00 PM – 3:00 PM</option>
+                <option>3:00 PM – 5:00 PM</option>
+                <option>5:00 PM – 7:00 PM</option>
               </select>
               <span class="error-msg" id="delivery-time-error">Please select a delivery time.</span>
             </div>
@@ -111,41 +329,85 @@
             <label for="service-type">Service Type *</label>
             <select id="service-type" name="service-type">
               <option value="">Select a service</option>
-              <option>Wash, Dry & Fold (Full Service)</option>
-              <option>Self-Service Laundry</option>
-              <option>Professional Dry Cleaning</option>
-              <option>Steam Ironing & Pressing</option>
-              <option>Bedding & Comforter Cleaning</option>
-              <option>Curtain & Rug Cleaning</option>
-              <option>Stain Removal Treatment</option>
+              <option value="laundry">Laundry (Wash / Dry / Fold — choose below)</option>
+              <option value="ironing">Steam Ironing & Pressing — ₱15–₱25/piece</option>
+              <option value="bedding">Bedding & Comforter Cleaning — ₱250–₱450/set</option>
+              <option value="curtains">Curtain & Rug Cleaning — ₱150–₱300/piece</option>
+              <option value="stain">Stain Removal Treatment — ₱30–₱60/item</option>
             </select>
             <span class="error-msg" id="service-type-error">Please select a service type.</span>
           </div>
 
-          <label class="checkboxes-label">Add-Ons (Optional)</label>
+          <!-- LAUNDRY OPTIONS — shown only when "Laundry" is selected -->
+          <div id="laundry-options" style="display:none;">
+            <label class="checkboxes-label">Laundry Steps <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-warm);font-size:0.82rem;">— pick at least one *</span></label>
+            <span class="error-msg" id="laundry-steps-error" style="display:none; color:#c0392b; font-size:0.78rem; margin-bottom:10px; display:none;">Please select at least one laundry step.</span>
+            <div class="laundry-steps-grid">
+
+              <label class="laundry-step-card" id="card-wash">
+                <input type="checkbox" name="laundry-step" value="wash" id="step-wash" />
+                <div class="step-card-inner">
+                  <div class="step-card-icon">🫧</div>
+                  <div class="step-card-body">
+                    <strong>Wash</strong>
+                    <span>Machine wash with premium detergent, sorted by color &amp; fabric type.</span>
+                    <div class="step-card-price">₱40–₱55 / kg</div>
+                  </div>
+                </div>
+              </label>
+
+              <label class="laundry-step-card" id="card-dry">
+                <input type="checkbox" name="laundry-step" value="dry" id="step-dry" />
+                <div class="step-card-inner">
+                  <div class="step-card-icon">🌬️</div>
+                  <div class="step-card-body">
+                    <strong>Dry</strong>
+                    <span>Commercial tumble drying at correct temperature per fabric.</span>
+                    <div class="step-card-price">₱25–₱35 / kg</div>
+                  </div>
+                </div>
+              </label>
+
+              <label class="laundry-step-card" id="card-fold">
+                <input type="checkbox" name="laundry-step" value="fold" id="step-fold" />
+                <div class="step-card-inner">
+                  <div class="step-card-icon">👕</div>
+                  <div class="step-card-body">
+                    <strong>Fold</strong>
+                    <span>Neatly folded and sealed in packaging, ready to put away.</span>
+                    <div class="step-card-price">₱15–₱20 / kg</div>
+                  </div>
+                </div>
+              </label>
+
+            </div>
+            <p class="laundry-note">💡 Selecting all three (Wash + Dry + Fold) gives you our full laundry service at <strong>₱75–₱90/kg</strong>.</p>
+          </div>
+
+          <label class="checkboxes-label" style="margin-top:8px;">Extra Add-Ons <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-warm);font-size:0.82rem;">(Optional)</span></label>
           <div class="checkboxes-grid">
             <label class="checkbox-item">
-              <input type="checkbox" name="addons" value="steam-ironing" />
-              Steam Ironing (+₱20/pc)
+              <input type="checkbox" name="addons" value="Steam Ironing (+₱15–₱25/pc)" />
+              Steam Ironing (+₱15–₱25/pc)
             </label>
             <label class="checkbox-item">
-              <input type="checkbox" name="addons" value="fabric-softener" />
-              Fabric Softener (+₱30)
+              <input type="checkbox" name="addons" value="Fabric Softener (+₱25)" />
+              Fabric Softener (+₱25)
             </label>
             <label class="checkbox-item">
-              <input type="checkbox" name="addons" value="stain-removal" />
-              Stain Removal Treatment (+₱50/pc)
+              <input type="checkbox" name="addons" value="Stain Removal Treatment (+₱30–₱60/pc)" />
+              Stain Removal Treatment (+₱30–₱60/pc)
             </label>
             <label class="checkbox-item">
-              <input type="checkbox" name="addons" value="scented-sachet" />
+              <input type="checkbox" name="addons" value="Scented Sachet (+₱15)" />
               Scented Sachet (+₱15)
             </label>
             <label class="checkbox-item">
-              <input type="checkbox" name="addons" value="folding-premium" />
-              Premium Folding & Packing (+₱40)
+              <input type="checkbox" name="addons" value="Premium Folding & Packing (+₱30)" />
+              Premium Folding & Packing (+₱30)
             </label>
             <label class="checkbox-item">
-              <input type="checkbox" name="addons" value="express" />
+              <input type="checkbox" name="addons" value="Express Same-Day (+₱80)" />
               Express Same-Day (+₱80)
             </label>
           </div>
@@ -156,12 +418,57 @@
           </div>
 
           <div class="form-submit-row">
-            <button type="submit" class="btn-primary">Confirm Booking</button>
-            <span class="form-note">We'll send a confirmation via SMS within the hour.</span>
+            <button type="submit" class="btn-primary">Review My Order →</button>
+            <span class="form-note">You'll review your details before confirming.</span>
           </div>
 
         </form>
 
+        <!-- STEP 2: ORDER SUMMARY -->
+        <div id="order-summary">
+          <span class="section-label">Step 2 of 2</span>
+          <h2>Review Your Order</h2>
+          <p class="summary-subtitle">Please check your details before confirming. You can go back to make changes.</p>
+
+          <div class="summary-section">
+            <div class="summary-section-title">Customer Information</div>
+            <div class="summary-row"><span class="label">Name</span><span class="value" id="sum-name"></span></div>
+            <div class="summary-row"><span class="label">Phone</span><span class="value" id="sum-phone"></span></div>
+            <div class="summary-row"><span class="label">Address</span><span class="value" id="sum-address"></span></div>
+          </div>
+
+          <div class="summary-section">
+            <div class="summary-section-title">Schedule</div>
+            <div class="summary-row"><span class="label">Pickup Date & Time</span><span class="value" id="sum-pickup"></span></div>
+            <div class="summary-row"><span class="label">Delivery Date & Time</span><span class="value" id="sum-delivery"></span></div>
+          </div>
+
+          <div class="summary-section">
+            <div class="summary-section-title">Service</div>
+            <div class="summary-row"><span class="label">Service Type</span><span class="value" id="sum-service"></span></div>
+            <div class="summary-row" id="sum-steps-row" style="display:none;"><span class="label">Pricing</span><span class="value" id="sum-steps"></span></div>
+            <div class="summary-row" id="sum-addons-row">
+              <span class="label">Add-Ons</span>
+              <span class="value" id="sum-addons"></span>
+            </div>
+            <div id="sum-instructions-row" style="display:none;">
+              <div class="summary-row"><span class="label">Special Instructions</span></div>
+              <div class="summary-instructions" id="sum-instructions"></div>
+            </div>
+          </div>
+
+          <div class="summary-price-box">
+            <p>💡 <strong>Final price is determined upon pickup</strong> based on actual weight or item count. The rates shown are estimates only. We'll send you a breakdown via SMS after pickup.</p>
+          </div>
+
+          <div class="summary-actions">
+            <button type="button" class="btn-primary" id="confirmBtn">Confirm Booking ✓</button>
+            <button type="button" class="btn-secondary" id="backBtn">← Edit Details</button>
+            <span class="summary-note">SMS confirmation within the hour.</span>
+          </div>
+        </div>
+
+        <!-- STEP 3: CONFIRMATION -->
         <div id="confirmation-msg">
           <h3>🎉 Booking Confirmed!</h3>
           <p>Thank you! We've received your booking and will send an SMS confirmation to your number shortly. See you on pickup day!</p>
@@ -176,7 +483,7 @@
           <h3>📋 Before You Book</h3>
           <ul>
             <li>Check that your address is within our service area</li>
-            <li>Bag your laundry loosely don't overstuff</li>
+            <li>Bag your laundry loosely — don't overstuff</li>
             <li>Remove items from pockets</li>
             <li>Separate heavily soiled items and let us know</li>
             <li>Be at home during your chosen pickup window</li>
@@ -186,11 +493,12 @@
         <div class="sidebar-card">
           <h3>🕐 Turnaround Times</h3>
           <ul>
-            <li>Wash-Dry-Fold: Same day or next day</li>
-            <li>Dry Cleaning: 1-2 days</li>
+            <li>Full-Service Wash-Dry-Fold: Same day or next day</li>
+            <li>Self-Service: Done in-shop while you wait</li>
+            <li>Dry Cleaning: 1–2 days</li>
             <li>Steam Ironing: Same day</li>
-            <li>Bedding & Comforters: 2-3 days</li>
-            <li>Curtains & Rugs: 3-5 days</li>
+            <li>Bedding & Comforters: 2–3 days</li>
+            <li>Curtains & Rugs: 3–5 days</li>
           </ul>
         </div>
 
@@ -232,7 +540,8 @@
         <div class="footer-col">
           <h4>Services</h4>
           <ul>
-            <li>Wash-Dry-Fold</li>
+            <li>Full-Service Wash-Dry-Fold</li>
+            <li>Self-Service Laundry</li>
             <li>Dry Cleaning</li>
             <li>Steam Ironing</li>
             <li>Bedding & Comforters</li>
@@ -244,8 +553,8 @@
           <h4>Contact</h4>
           <p>📍 Malolos, Bulacan</p>
           <p>📞 0917-123-4567</p>
-          <p>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="adc5c8c1c1c2eddddfc8ded9c2daccdec583ddc5">[email&#160;protected]</a></p>
-          <p style="margin-top:16px;">Open daily: 7AM 8PM</p>
+          <p>✉️ hello@mrquickly.ph</p>
+          <p style="margin-top:16px;">Open daily: 7AM – 8PM</p>
         </div>
       </div>
       <div class="footer-bottom">
@@ -258,5 +567,7 @@
       </div>
     </div>
   </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
